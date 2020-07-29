@@ -5,21 +5,26 @@ ENV PYTHONUNBUFFERED 1
 # create a new user beacuse root user should run application
 # this linkg tells more about this command and why use useradd 
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
-RUN groupadd -r -g 1000 worker && \
-    useradd --no-log-init -r -m -u 1000 -g worker worker && \
-    chown -R worker /home/worker
+RUN groupadd -r -g 1000 tester && \
+    useradd --no-log-init -r -m -u 1000 -g tester tester && \
+    chown -R tester /home/tester
 
-USER worker
+USER tester
 
-ENV PATH="/home/worker/.local/bin:${PATH}"
+ENV PATH="/home/tester/.local/bin:${PATH}"
 
-WORKDIR /home/worker
+WORKDIR /home/tester
 
 COPY requiremnets.txt requiremnets.txt
 
 # need to add user bin so installed pip package will be accessable
 RUN pip install --user --no-cache-dir -r requiremnets.txt
+# need to add user bin so installed pip package will be accessable
 
-COPY --chown=worker:worker . ./worker-first/
+WORKDIR /home/tester/app
 
-CMD [ "celery", "-A", "worker-first", "worker", "-l", "info" ]
+COPY --chown=tester:tester . .app
+
+
+CMD ["python", "test-cel.py"]
+

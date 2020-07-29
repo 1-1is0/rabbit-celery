@@ -14,24 +14,24 @@ services:
         protocol: tcp
         mode: host
 
-  worker-first:
+  worker-math:
     build:
-      context: ./worker-first
+      context: ./worker-math
       dockerfile: Dockerfile.dev
     volumes: 
-      - ./worker-first:/home/worker/worker-first
+      - ./worker-math:/home/worker/worker-math
 
-  worker-second:
+  worker-fib:
     build:
-      context: ./worker-second
+      context: ./worker-fib
       dockerfile: Dockerfile.dev
     volumes: 
-      - ./worker-second:/home/worker/worker-second
+      - ./worker-fib:/home/worker/worker-fib
 
   celery-test:
     build:
       context: ./test
       dockerfile: Dockerfile.dev
     volumes:
-      - ./test:/home/tester/test
+      - ./test:/home/tester/app
 

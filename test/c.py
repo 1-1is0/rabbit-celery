@@ -4,7 +4,7 @@ from celery import Celery
 
 app = Celery()
 
-app.config_from_object('worker-first.celeryconfig')
+app.config_from_object('test.celeryconfig')
 
 # Optional configuration, see the application user guide.
 # app.conf.update(
