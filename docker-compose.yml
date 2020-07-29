@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    ports: 
+      - target: 5672
+        published: 5672
+        protocol: tcp
+        mode: host
+      - target: 15672
+        published: 15672
+        protocol: tcp
+        mode: host
+
+  worker-first:
+    build:
+      context: ./worker-first
+      dockerfile: Dockerfile.dev
+    volumes: 
+      - ./worker-first:/home/worker/worker-first
+
+  worker-second:
+    build:
+      context: ./worker-second
+      dockerfile: Dockerfile.dev
+    volumes: 
+      - ./worker-second:/home/worker/worker-second
+
+  celery-test:
+    build:
+      context: ./test
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./test:/home/tester/test
+
